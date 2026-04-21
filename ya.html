@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Vanitas AI · Ultimate Edition | Blue Luminescence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================ */
+        /* VANITAS AI ULTIMATE EDITION - 2000+ LINES   */
+        /* ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0c12;
+            --bg-secondary: #0f111a;
+            --bg-card: #141824;
+            --border-glow: rgba(0, 160, 255, 0.3);
+            --neon-blue: #3b82f6;
+            --neon-cyan: #00e0ff;
+            --text-primary: #eef2ff;
+            --text-secondary: #8ba3c7;
+            --accent-red: #ff4757;
+            --accent-green: #2ed573;
+            --accent-yellow: #ffa502;
+            --sidebar-width: 300px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* ========= ANIMATIONS ========= */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 5px var(--neon-blue), 0 0 10px rgba(59,130,246,0.3); }
+            50% { box-shadow: 0 0 20px var(--neon-blue), 0 0 30px rgba(59,130,246,0.5); }
+        }
+        @keyframes typingWave {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+            30% { transform: translateY(-8px); opacity: 1; background: #00ccff; }
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* ========= LAYOUT ========= */
+        .app {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* ========= SIDEBAR ========= */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: rgba(15, 17, 26, 0.98);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border-glow);
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            z-index: 30;
+            flex-shrink: 0;
+        }
+
+        .sidebar-header {
+            padding: 28px 20px 20px 24px;
+            border-bottom: 1px solid rgba(0, 180, 255, 0.2);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, var(--neon-blue), var(--neon-cyan));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .logo i {
+            background: none;
+            -webkit-background-clip: unset;
+            background-clip: unset;
+            color: var(--neon-blue);
+        }
+
+        .version-badge {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            margin-top: 6px;
+        }
+
+        /* Stats Cards */
+        .stats-mini {
+            display: flex;
+            gap: 12px;
+            padding: 16px;
+            background: rgba(0, 100, 200, 0.1);
+            margin: 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(59,130,246,0.2);
+        }
+        .stat-mini-item {
+            flex: 1;
+            text-align: center;
+        }
+        .stat-mini-item .value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--neon-blue);
+        }
+        .stat-mini-item .label {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+        }
+
+        .new-chat-btn {
+            margin: 0 16px 16px 16px;
+            background: linear-gradient(135deg, rgba(59,130,246,0.2), rgba(0,224,255,0.1));
+            border: 1px solid var(--neon-blue);
+            border-radius: 44px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .new-chat-btn:hover {
+            background: rgba(59,130,246,0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(59,130,246,0.3);
+        }
+
+        .history-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+        .history-title {
+            padding: 12px 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            letter-spacing: 1.5px;
+        }
+        .history-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 12px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .history-item {
+            padding: 12px 14px;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            background: rgba(20, 24, 36, 0.6);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid transparent;
+        }
+        .history-item:hover {
+            background: rgba(59,130,246,0.15);
+            border-color: var(--neon-blue);
+            transform: translateX(4px);
+        }
+        .history-item.active {
+            background: rgba(59,130,246,0.25);
+            border-color: var(--neon-blue);
+        }
+        .history-name {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 180px;
+        }
+        .history-time {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+        }
+        .delete-chat {
+            opacity: 0.5;
+            padding: 4px;
+            transition: var(--transition);
+        }
+        .delete-chat:hover {
+            opacity: 1;
+            color: var(--accent-red);
+        }
+
+        .sidebar-footer {
+            padding: 16px 20px;
+            border-top: 1px solid rgba(59,130,246,0.2);
+            font-size: 0.7rem;
+            text-align: center;
+        }
+
+        /* ========= MAIN CHAT ========= */
+        .main-chat {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            background: radial-gradient(ellipse at 20% 30%, rgba(10,12,18,0.8), rgba(5,7,12,0.95));
+        }
+
+        /* Chat Header */
+        .chat-header {
+            padding: 16px 28px;
+            background: rgba(15, 17, 26, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-glow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .hamburger {
+            display: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: var(--neon-blue);
+        }
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: #2ed573;
+            border-radius: 50%;
+            animation: pulseGlow 2s infinite;
+        }
+        .model-badge {
+            background: rgba(59,130,246,0.2);
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+        .icon-btn {
+            background: rgba(59,130,246,0.15);
+            border: none;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            cursor: pointer;
+            color: var(--text-primary);
+            transition: var(--transition);
+        }
+        .icon-btn:hover {
+            background: var(--neon-blue);
+            transform: scale(1.05);
+        }
+
+        /* Messages Container - SCROLLABLE */
+        .messages-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            scroll-behavior: smooth;
+        }
+
+        /* Message Bubbles */
+        .message {
+            display: flex;
+            gap: 14px;
+            max-width: 85%;
+            animation: fadeIn 0.25s ease;
+        }
+        .message.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+        .message.vanitas {
+            align-self: flex-start;
+        }
+        .message-avatar {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(145deg, #121c2c, #031e30);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 12px rgba(59,130,246,0.3);
+            flex-shrink: 0;
+        }
+        .message-bubble {
+            background: rgba(24, 30, 44, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 12px 20px;
+            border-radius: 24px;
+            border: 1px solid rgba(59,130,246,0.3);
+            line-height: 1.55;
+            font-size: 0.92rem;
+        }
+        .message.user .message-bubble {
+            background: linear-gradient(135deg, #0b2e4a, #021a30);
+            border-color: rgba(0,224,255,0.5);
+        }
+        .message-time {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+
+        /* Typing Indicator */
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(24, 30, 44, 0.95);
+            padding: 12px 20px;
+            border-radius: 24px;
+            border: 1px solid var(--neon-blue);
+        }
+        .typing-dots span {
+            width: 8px;
+            height: 8px;
+            background: var(--neon-blue);
+            border-radius: 50%;
+            display: inline-block;
+            animation: typingWave 1.2s infinite;
+            margin: 0 2px;
+        }
+        .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        /* Input Area */
+        .input-area {
+            padding: 20px 28px 28px;
+            flex-shrink: 0;
+            border-top: 1px solid var(--border-glow);
+        }
+        .input-wrapper {
+            background: rgba(18, 24, 36, 0.95);
+            backdrop-filter: blur(16px);
+            border-radius: 60px;
+            display: flex;
+            align-items: center;
+            padding: 6px 6px 6px 24px;
+            border: 1px solid #20507a;
+            transition: var(--transition);
+        }
+        .input-wrapper:focus-within {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+        }
+        .input-wrapper input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 14px 0;
+            color: white;
+            font-size: 0.95rem;
+            outline: none;
+        }
+        .input-wrapper input::placeholder {
+            color: #6e88aa;
+        }
+        .input-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .input-action-btn {
+            background: rgba(59,130,246,0.15);
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            color: var(--text-primary);
+            transition: var(--transition);
+        }
+        .input-action-btn:hover {
+            background: var(--neon-blue);
+            transform: scale(0.96);
+        }
+        .send-btn {
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-cyan));
+            border: none;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .send-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--neon-blue);
+        }
+
+        /* Settings Panel */
+        .settings-panel {
+            position: fixed;
+            right: -400px;
+            top: 0;
+            width: 380px;
+            height: 100%;
+            background: rgba(15, 17, 26, 0.98);
+            backdrop-filter: blur(20px);
+            border-left: 1px solid var(--border-glow);
+            z-index: 40;
+            transition: var(--transition);
+            padding: 28px;
+            overflow-y: auto;
+        }
+        .settings-panel.open {
+            right: 0;
+        }
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-glow);
+        }
+        .setting-item {
+            margin-bottom: 24px;
+        }
+        .setting-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .theme-selector {
+            display: flex;
+            gap: 12px;
+        }
+        .theme-option {
+            flex: 1;
+            padding: 12px;
+            background: rgba(59,130,246,0.1);
+            border: 1px solid var(--border-glow);
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .theme-option.active {
+            background: var(--neon-blue);
+            border-color: var(--neon-blue);
+        }
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: rgba(59,130,246,0.2);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .toggle-switch.active {
+            background: var(--neon-blue);
+        }
+        .toggle-slider {
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 3px;
+            transition: var(--transition);
+        }
+        .toggle-switch.active .toggle-slider {
+            left: 25px;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(59,130,246,0.9);
+            backdrop-filter: blur(10px);
+            padding: 12px 24px;
+            border-radius: 50px;
+            color: white;
+            font-size: 0.85rem;
+            z-index: 50;
+            transition: transform 0.3s ease;
+            white-space: nowrap;
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: -300px;
+                height: 100%;
+                z-index: 35;
+            }
+            .sidebar.mobile-open {
+                left: 0;
+            }
+            .hamburger {
+                display: block;
+            }
+            .message {
+                max-width: 95%;
+            }
+            .settings-panel {
+                width: 100%;
+                right: -100%;
+            }
+            .mobile-backdrop {
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.6);
+                z-index: 32;
+                display: none;
+            }
+            .mobile-backdrop.active {
+                display: block;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #141824;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--neon-blue);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="app">
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo"><i class="fas fa-feather-alt"></i> VANITAS</div>
+            <div class="version-badge">Ultimate Edition v3.0 | GPT-5 Engine</div>
+        </div>
+        
+        <div class="stats-mini">
+            <div class="stat-mini-item">
+                <div class="value" id="chatCount">0</div>
+                <div class="label">Chats</div>
+            </div>
+            <div class="stat-mini-item">
+                <div class="value" id="messageCount">0</div>
+                <div class="label">Messages</div>
+            </div>
+            <div class="stat-mini-item">
+                <div class="value" id="tokenCount">0</div>
+                <div class="label">Tokens</div>
+            </div>
+        </div>
+
+        <div class="new-chat-btn" id="newChatBtn">
+            <i class="fas fa-plus-circle"></i> <span>＋ Obrolan Baru</span>
+        </div>
+
+        <div class="history-section">
+            <div class="history-title"><i class="far fa-clock"></i> RIWAYAT PERCAKAPAN</div>
+            <div class="history-list" id="historyList"></div>
+        </div>
+
+        <div class="sidebar-footer">
+            <i class="fas fa-shield-alt"></i> Encrypted · Vanitas AI
+        </div>
+    </div>
+    <div class="mobile-backdrop" id="mobileBackdrop" onclick="closeSidebar()"></div>
+
+    <!-- Main Chat -->
+    <div class="main-chat">
+        <div class="chat-header">
+            <div class="header-left">
+                <i class="fas fa-bars hamburger" id="hamburgerBtn"></i>
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <span id="activeChatTitle">Vanitas AI</span>
+                </div>
+            </div>
+            <div class="model-badge"><i class="fas fa-brain"></i> GPT-5 · Blue Core</div>
+            <div class="header-actions">
+                <button class="icon-btn" id="clearChatBtn" title="Clear chat"><i class="fas fa-broom"></i></button>
+                <button class="icon-btn" id="exportChatBtn" title="Export chat"><i class="fas fa-download"></i></button>
+                <button class="icon-btn" id="settingsBtn"><i class="fas fa-cog"></i></button>
+            </div>
+        </div>
+
+        <div class="messages-area" id="messagesArea">
+            <div class="message vanitas">
+                <div class="message-avatar"><i class="fas fa-moon"></i></div>
+                <div class="message-bubble">
+                    ✨ Vanitas Ultimate hadir. Aku siap membantu dengan cahaya biru. Fitur baru: suara, tema, ekspor chat!<br>
+                    Tanyakan apapun padaku.
+                    <div class="message-time">Now</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="input-area">
+            <div class="input-wrapper">
+                <input type="text" id="messageInput" placeholder="Ketik pesan ke Vanitas..." autocomplete="off">
+                <div class="input-actions">
+                    <button class="input-action-btn" id="voiceBtn" title="Voice input"><i class="fas fa-microphone"></i></button>
+                    <button class="send-btn" id="sendBtn"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Panel -->
+    <div class="settings-panel" id="settingsPanel">
+        <div class="settings-header">
+            <h3><i class="fas fa-cog"></i> Pengaturan</h3>
+            <button class="icon-btn" id="closeSettingsBtn"><i class="fas fa-times"></i></button>
+        </div>
+        
+        <div class="setting-item">
+            <label class="setting-label">🎨 Tema Warna</label>
+            <div class="theme-selector">
+                <div class="theme-option active" data-theme="blue">🌊 Biru</div>
+                <div class="theme-option" data-theme="purple">🟣 Ungu</div>
+                <div class="theme-option" data-theme="green">🌿 Hijau</div>
+            </div>
+        </div>
+
+        <div class="setting-item">
+            <label class="setting-label">🔊 Notifikasi Suara</label>
+            <div class="toggle-switch" id="soundToggle">
+                <div class="toggle-slider"></div>
+            </div>
+        </div>
+
+        <div class="setting-item">
+            <label class="setting-label">📝 Auto-save Chat</label>
+            <div class="toggle-switch active" id="autosaveToggle">
+                <div class="toggle-slider"></div>
+            </div>
+        </div>
+
+        <div class="setting-item">
+            <label class="setting-label">🎤 Voice Recognition</label>
+            <div class="toggle-switch active" id="voiceToggle">
+                <div class="toggle-slider"></div>
+            </div>
+        </div>
+
+        <div class="setting-item">
+            <label class="setting-label">🗑️ Hapus Semua Data</label>
+            <button class="new-chat-btn" id="deleteAllDataBtn" style="margin:0; background:rgba(255,71,87,0.2); border-color:#ff4757;">
+                <i class="fas fa-trash-alt"></i> Hapus Semua Riwayat
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast">Pesan tersimpan</div>
+
+<script>
+    // ============================================
+    // VANITAS AI ULTIMATE - FULL FEATURES
+    // ============================================
+    
+    // Data Structure
+    let chats = [];
+    let activeChatId = null;
+    let isLoading = false;
+    let soundEnabled = true;
+    let autosaveEnabled = true;
+    let voiceEnabled = true;
+    let currentTheme = 'blue';
+    let recognition = null;
+    
+    // DOM Elements
+    const messagesArea = document.getElementById('messagesArea');
+    const historyList = document.getElementById('historyList');
+    const messageInput = document.getElementById('messageInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const newChatBtn = document.getElementById('newChatBtn');
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const sidebar = document.getElementById('sidebar');
+    const mobileBackdrop = document.getElementById('mobileBackdrop');
+    const settingsBtn = document.getElementById('settingsBtn');
+    const settingsPanel = document.getElementById('settingsPanel');
+    const closeSettingsBtn = document.getElementById('closeSettingsBtn');
+    const clearChatBtn = document.getElementById('clearChatBtn');
+    const exportChatBtn = document.getElementById('exportChatBtn');
+    const voiceBtn = document.getElementById('voiceBtn');
+    const soundToggle = document.getElementById('soundToggle');
+    const autosaveToggle = document.getElementById('autosaveToggle');
+    const voiceToggle = document.getElementById('voiceToggle');
+    const deleteAllDataBtn = document.getElementById('deleteAllDataBtn');
+    const toast = document.getElementById('toast');
+    const chatCountSpan = document.getElementById('chatCount');
+    const messageCountSpan = document.getElementById('messageCount');
+    const tokenCountSpan = document.getElementById('tokenCount');
+    const activeChatTitleSpan = document.getElementById('activeChatTitle');
+    
+    // Helper Functions
+    function showToast(message, isError = false) {
+        toast.textContent = message;
+        toast.style.background = isError ? 'rgba(255,71,87,0.9)' : 'rgba(59,130,246,0.9)';
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+        if (soundEnabled && !isError) {
+            const audio = new Audio('data:audio/wav;base64,U3RlYWx0aCBzb3VuZA==');
+            audio.play().catch(e => console.log('Audio not supported'));
+        }
+    }
+    
+    function playSound() {
+        if (!soundEnabled) return;
+        const audio = new Audio('data:audio/wav;base64,U3RlYWx0aCBzb3VuZA==');
+        audio.play().catch(() => {});
+    }
+    
+    function updateStats() {
+        chatCountSpan.textContent = chats.length;
+        let totalMessages = 0;
+        chats.forEach(chat => totalMessages += chat.messages.length);
+        messageCountSpan.textContent = totalMessages;
+        tokenCountSpan.textContent = Math.floor(totalMessages * 15);
+    }
+    
+    // Save/Load Storage
+    function saveData() {
+        if (!autosaveEnabled) return;
+        const data = { chats, activeChatId, currentTheme, soundEnabled, voiceEnabled };
+        localStorage.setItem('vanitas_ultimate_data', JSON.stringify(data));
+    }
+    
+    function loadData() {
+        const stored = localStorage.getItem('vanitas_ultimate_data');
+        if (stored) {
+            try {
+                const data = JSON.parse(stored);
+                chats = data.chats || [];
+                activeChatId = data.activeChatId || null;
+                currentTheme = data.currentTheme || 'blue';
+                soundEnabled = data.soundEnabled !== undefined ? data.soundEnabled : true;
+                voiceEnabled = data.voiceEnabled !== undefined ? data.voiceEnabled : true;
+                applyTheme(currentTheme);
+                updateToggleUI();
+            } catch(e) { console.error(e); }
+        }
+        if (!chats.length) {
+            const defaultId = Date.now().toString();
+            chats = [{
+                id: defaultId,
+                title: '✨ Percakapan Pertama',
+                messages: [{ role: 'ai', content: '✨ Vanitas Ultimate hadir. Aku siap membantu dengan cahaya biru. Fitur baru: suara, tema, ekspor chat! Tanyakan apapun padaku.', timestamp: Date.now() }],
+                createdAt: Date.now()
+            }];
+            activeChatId = defaultId;
+        }
+        if (!activeChatId || !chats.find(c => c.id === activeChatId)) {
+            activeChatId = chats[0]?.id || null;
+        }
+        updateStats();
+        saveData();
+    }
+    
+    function updateToggleUI() {
+        if (soundToggle) {
+            if (soundEnabled) soundToggle.classList.add('active');
+            else soundToggle.classList.remove('active');
+        }
+        if (voiceToggle) {
+            if (voiceEnabled) voiceToggle.classList.add('active');
+            else voiceToggle.classList.remove('active');
+        }
+        if (autosaveToggle) {
+            if (autosaveEnabled) autosaveToggle.classList.add('active');
+            else autosaveToggle.classList.remove('active');
+        }
+    }
+    
+    function applyTheme(theme) {
+        currentTheme = theme;
+        const root = document.documentElement;
+        if (theme === 'blue') {
+            root.style.setProperty('--neon-blue', '#3b82f6');
+            root.style.setProperty('--neon-cyan', '#00e0ff');
+        } else if (theme === 'purple') {
+            root.style.setProperty('--neon-blue', '#a855f7');
+            root.style.setProperty('--neon-cyan', '#d946ef');
+        } else if (theme === 'green') {
+            root.style.setProperty('--neon-blue', '#22c55e');
+            root.style.setProperty('--neon-cyan', '#10b981');
+        }
+        document.querySelectorAll('.theme-option').forEach(opt => {
+            opt.classList.remove('active');
+            if (opt.dataset.theme === theme) opt.classList.add('active');
+        });
+        saveData();
+    }
+    
+    // Render History
+    function renderHistory() {
+        if (!historyList) return;
+        if (chats.length === 0) {
+            historyList.innerHTML = '<div style="text-align:center; color:#6e88aa; padding:20px;">✨ Belum ada chat</div>';
+            return;
+        }
+        historyList.innerHTML = '';
+        chats.forEach(chat => {
+            const item = document.createElement('div');
+            item.className = 'history-item';
+            if (activeChatId === chat.id) item.classList.add('active');
+            item.innerHTML = `
+                <span class="history-name">${chat.title.length > 25 ? chat.title.slice(0,22)+'...' : chat.title}</span>
+                <span class="delete-chat" data-id="${chat.id}"><i class="fas fa-trash-alt"></i></span>
+            `;
+            item.onclick = (e) => {
+                if (e.target.closest('.delete-chat')) return;
+                activeChatId = chat.id;
+                renderMessages();
+                renderHistory();
+                activeChatTitleSpan.textContent = chat.title;
+                saveData();
+                closeSidebar();
+            };
+            const delBtn = item.querySelector('.delete-chat');
+            delBtn.onclick = (e) => {
+                e.stopPropagation();
+                deleteChat(chat.id);
+            };
+            historyList.appendChild(item);
+        });
+    }
+    
+    function deleteChat(chatId) {
+        const idx = chats.findIndex(c => c.id === chatId);
+        if (idx !== -1) chats.splice(idx, 1);
+        if (chats.length === 0) createNewChat();
+        else if (activeChatId === chatId) activeChatId = chats[0].id;
+        saveData();
+        renderHistory();
+        renderMessages();
+        updateStats();
+        showToast('Chat dihapus');
+    }
+    
+    function createNewChat() {
+        const newId = Date.now().toString();
+        const newChat = {
+            id: newId,
+            title: `Obrolan ${new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}`,
+            messages: [{ role: 'ai', content: '🌀 Vanitas menyala. Ada yang bisa saya bantu hari ini?', timestamp: Date.now() }],
+            createdAt: Date.now()
+        };
+        chats.unshift(newChat);
+        activeChatId = newId;
+        saveData();
+        renderHistory();
+        renderMessages();
+        updateStats();
+        activeChatTitleSpan.textContent = newChat.title;
+        showToast('Chat baru dibuat');
+        playSound();
+    }
+    
+    // Render Messages
+    function renderMessages() {
+        if (!messagesArea) return;
+        const activeChat = chats.find(c => c.id === activeChatId);
+        if (!activeChat) {
+            messagesArea.innerHTML = '<div class="message vanitas"><div class="message-avatar"><i class="fas fa-info-circle"></i></div><div class="message-bubble">Buat chat baru untuk memulai percakapan dengan Vanitas.</div></div>';
+            return;
+        }
+        messagesArea.innerHTML = '';
+        activeChat.messages.forEach((msg, idx) => {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message ${msg.role === 'user' ? 'user' : 'vanitas'}`;
+            const time = msg.timestamp ? new Date(msg.timestamp).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : '';
+            msgDiv.innerHTML = `
+                <div class="message-avatar">${msg.role === 'user' ? '<i class="fas fa-user-astronaut"></i>' : '<i class="fas fa-moon"></i>'}</div>
+                <div class="message-bubble">
+                    ${msg.content}
+                    <div class="message-time">${time}</div>
+                </div>
+            `;
+            messagesArea.appendChild(msgDiv);
+        });
+        scrollToBottom();
+    }
+    
+    function scrollToBottom() {
+        setTimeout(() => {
+            if (messagesArea) messagesArea.scrollTop = messagesArea.scrollHeight;
+        }, 100);
+    }
+    
+    // Typing Indicator
+    let typingDiv = null;
+    function showTyping() {
+        removeTyping();
+        typingDiv = document.createElement('div');
+        typingDiv.className = 'message vanitas';
+        typingDiv.id = 'typingIndicator';
+        typingDiv.innerHTML = `
+            <div class="message-avatar"><i class="fas fa-moon"></i></div>
+            <div class="typing-indicator">
+                <div class="typing-dots"><span></span><span></span><span></span></div>
+                <span>Vanitas sedang berpikir...</span>
+            </div>
+        `;
+        messagesArea.appendChild(typingDiv);
+        scrollToBottom();
+    }
+    
+    function removeTyping() {
+        if (typingDiv) typingDiv.remove();
+        typingDiv = null;
+    }
+    
+    // API Call
+    async function callVanitasAPI(question) {
+        const encoded = encodeURIComponent(question);
+        const url = `https://api.yupra.my.id/api/ai/gpt5?text=${encoded}`;
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 60000);
+            const response = await fetch(url, { method: 'GET', headers: { 'Accept': 'application/json' }, signal: controller.signal });
+            clearTimeout(timeoutId);
+            if (!response.ok) return `⚠️ Vanitas: Error ${response.status}. Coba lagi nanti.`;
+            const data = await response.json();
+            if (typeof data === 'string') return data;
+            if (data.response) return data.response;
+            if (data.result) return data.result;
+            if (data.message) return data.message;
+            if (data.content) return data.content;
+            return "✨ Vanitas: " + JSON.stringify(data).slice(0, 800);
+        } catch(err) {
+            if (err.name === 'AbortError') return "⏱️ Vanitas: Timeout, coba lagi ya.";
+            return `🔌 Vanitas: Koneksi gagal. ${err.message}`;
+        }
+    }
+    
+    // Send Message
+    async function sendMessage() {
+        if (isLoading) return;
+        const text = messageInput.value.trim();
+        if (!text) return;
+        
+        let activeChat = chats.find(c => c.id === activeChatId);
+        if (!activeChat) {
+            createNewChat();
+            activeChat = chats.find(c => c.id === activeChatId);
+        }
+        
+        // Add user message
+        activeChat.messages.push({ role: 'user', content: text, timestamp: Date.now() });
+        saveData();
+        renderMessages();
+        messageInput.value = '';
+        updateStats();
+        
+        // Update title if needed
+        if (activeChat.title.startsWith('Obrolan') && activeChat.messages.length === 2) {
+            activeChat.title = text.length > 30 ? text.slice(0,27)+'...' : text;
+            renderHistory();
+            activeChatTitleSpan.textContent = activeChat.title;
+            saveData();
+        }
+        
+        isLoading = true;
+        showTyping();
+        
+        const aiResponse = await callVanitasAPI(text);
+        removeTyping();
+        
+        activeChat.messages.push({ role: 'ai', content: aiResponse, timestamp: Date.now() });
+        saveData();
+        renderMessages();
+        updateStats();
+        isLoading = false;
+        playSound();
+        scrollToBottom();
+    }
+    
+    function clearCurrentChat() {
+        const activeChat = chats.find(c => c.id === activeChatId);
+        if (activeChat && activeChat.messages.length > 1) {
+            activeChat.messages = [activeChat.messages[0]];
+            saveData();
+            renderMessages();
+            showToast('Chat dibersihkan');
+        }
+    }
+    
+    function exportCurrentChat() {
+        const activeChat = chats.find(c => c.id === activeChatId);
+        if (!activeChat) return;
+        const exportData = {
+            title: activeChat.title,
+            date: new Date().toISOString(),
+            messages: activeChat.messages,
+            version: 'Vanitas AI Ultimate v3.0'
+        };
+        const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `vanitas_chat_${Date.now()}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast('Chat diekspor!');
+    }
+    
+    function deleteAllData() {
+        if (confirm('Hapus SEMUA riwayat chat? Tindakan ini tidak bisa dibatalkan!')) {
+            chats = [];
+            createNewChat();
+            renderHistory();
+            renderMessages();
+            updateStats();
+            showToast('Semua data dihapus');
+        }
+    }
+    
+    // Voice Recognition
+    function initVoiceRecognition() {
+        if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+            console.log('Voice recognition not supported');
+            return;
+        }
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+        recognition.lang = 'id-ID';
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript;
+            messageInput.value = transcript;
+            sendMessage();
+        };
+        recognition.onerror = () => showToast('Voice recognition error', true);
+    }
+    
+    function startVoiceInput() {
+        if (!voiceEnabled) {
+            showToast('Voice input disabled in settings', true);
+            return;
+        }
+        if (!recognition) initVoiceRecognition();
+        if (recognition) {
+            recognition.start();
+            showToast('Mendengarkan...');
+        } else {
+            showToast('Voice not supported', true);
+        }
+    }
+    
+    // Sidebar
+    function openSidebar() {
+        if (window.innerWidth <= 768) {
+            sidebar.classList.add('mobile-open');
+            mobileBackdrop.classList.add('active');
+        }
+    }
+    
+    function closeSidebar() {
+        sidebar.classList.remove('mobile-open');
+        mobileBackdrop.classList.remove('active');
+    }
+    
+    // Toggle Settings
+    function toggleSettings() {
+        settingsPanel.classList.toggle('open');
+    }
+    
+    // Event Listeners
+    sendBtn.addEventListener('click', sendMessage);
+    messageInput.addEventListener('keypress', (e) => { if (e.key === 'Enter' && !isLoading) sendMessage(); });
+    newChatBtn.addEventListener('click', createNewChat);
+    hamburgerBtn.addEventListener('click', openSidebar);
+    mobileBackdrop.addEventListener('click', closeSidebar);
+    settingsBtn.addEventListener('click', toggleSettings);
+    closeSettingsBtn.addEventListener('click', toggleSettings);
+    clearChatBtn.addEventListener('click', clearCurrentChat);
+    exportChatBtn.addEventListener('click', exportCurrentChat);
+    voiceBtn.addEventListener('click', startVoiceInput);
+    deleteAllDataBtn.addEventListener('click', deleteAllData);
+    
+    soundToggle.addEventListener('click', () => {
+        soundEnabled = !soundEnabled;
+        updateToggleUI();
+        saveData();
+        showToast(soundEnabled ? 'Suara ON' : 'Suara OFF');
+    });
+    autosaveToggle.addEventListener('click', () => {
+        autosaveEnabled = !autosaveEnabled;
+        updateToggleUI();
+        saveData();
+        showToast(autosaveEnabled ? 'Auto-save ON' : 'Auto-save OFF');
+    });
+    voiceToggle.addEventListener('click', () => {
+        voiceEnabled = !voiceEnabled;
+        updateToggleUI();
+        saveData();
+        showToast(voiceEnabled ? 'Voice input ON' : 'Voice input OFF');
+    });
+    document.querySelectorAll('.theme-option').forEach(opt => {
+        opt.addEventListener('click', () => applyTheme(opt.dataset.theme));
+    });
+    
+    // Initialize
+    loadData();
+    renderHistory();
+    renderMessages();
+    updateStats();
+    initVoiceRecognition();
+    
+    // Focus input
+    messageInput.focus();
+</script>
+</body>
+</html>
